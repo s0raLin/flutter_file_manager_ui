@@ -1,6 +1,6 @@
 import 'package:file_manager_ui/pages/Browse/index.dart';
 import 'package:file_manager_ui/pages/Home/index.dart';
-import 'package:file_manager_ui/widgets/bar_tile.dart';
+import 'package:file_manager_ui/widgets/BarTile/index.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:file_manager_ui/models/storage.dart';
+import 'package:file_manager_ui/models/Storage/index.dart';
 
 class StorageService {
   

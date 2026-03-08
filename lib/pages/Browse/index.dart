@@ -1,5 +1,5 @@
-import 'package:file_manager_ui/models/storage.dart';
-import 'package:file_manager_ui/services/storage_service.dart';
+import 'package:file_manager_ui/models/Storage/index.dart';
+import 'package:file_manager_ui/services/Storage/index.dart';
 import 'package:flutter/material.dart';
 
 class BrowsePage extends StatefulWidget {
