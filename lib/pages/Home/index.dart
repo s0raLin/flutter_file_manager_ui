@@ -2,18 +2,17 @@ import 'dart:io';
 
 import 'package:file_manager_ui/models/file_item.dart';
 import 'package:file_manager_ui/services/file_service.dart';
-import 'package:file_manager_ui/widgets/bar_tile.dart';
 import 'package:file_manager_ui/widgets/file_tile.dart';
 import 'package:flutter/material.dart';
 
-class FileManagerPage extends StatefulWidget {
-  const FileManagerPage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<FileManagerPage> createState() => _FileManagerPageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _FileManagerPageState extends State<FileManagerPage> {
+class _HomePageState extends State<HomePage> {
   final FileService fileService = FileService();
 
   String currentPath = "/home/cangli";
@@ -85,7 +84,7 @@ class _FileManagerPageState extends State<FileManagerPage> {
           mainAxisExtent: 230,
         ),
       ),
-      bottomNavigationBar: BarTile(),
+
     );
   }
 }

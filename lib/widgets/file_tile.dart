@@ -56,14 +56,14 @@ class FolderCard extends StatelessWidget {
               height: 80,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.blueGrey.shade100,
+                color: Color.fromARGB(255, 233, 221, 255),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Center(
                 child: Icon(
                   file.isDirectory ? Icons.folder : Icons.insert_drive_file,
                   size: 40,
-                  color: Colors.blueGrey,
+                  color: Color.fromARGB(255, 101, 85, 143),
                 ),
               ),
             ),
