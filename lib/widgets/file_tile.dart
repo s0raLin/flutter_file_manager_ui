@@ -19,6 +19,7 @@ class FileTile extends StatelessWidget {
     // );
     return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
       child: FolderCard(file: file),
     );
   }
@@ -72,6 +73,8 @@ class FolderCard extends StatelessWidget {
             Text(
               file.name,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
 
             SizedBox(height: 4),

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:file_manager_ui/models/file_item.dart';
 import 'package:file_manager_ui/services/file_service.dart';
+import 'package:file_manager_ui/widgets/bar_tile.dart';
 import 'package:file_manager_ui/widgets/file_tile.dart';
 import 'package:flutter/material.dart';
 
@@ -77,13 +78,16 @@ class _FileManagerPageState extends State<FileManagerPage> {
 
           return FileTile(file: file, onTap: () => open(file));
         },
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 250,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
-          childAspectRatio: 1.5,
+          mainAxisExtent: 230,
         ),
       ),
+      bottomNavigationBar: BarTile(),
     );
   }
 }
+
+
