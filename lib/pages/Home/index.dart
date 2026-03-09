@@ -16,13 +16,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final FileService fileService = FileService();
 
-  String currentPath = "/sdcard/";
+  String currentPath = "/";
   List<FileItem> files = [];
   Set<String> selectedFiles = {};
 
+  @override
   void initState() {
     super.initState();
-    loadFiles();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      loadFiles();
+    });
   }
   /*@override
  

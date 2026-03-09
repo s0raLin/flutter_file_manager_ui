@@ -1,5 +1,6 @@
 import 'package:file_manager_ui/models/Storage/index.dart';
 import 'package:file_manager_ui/services/Storage/index.dart';
+import 'package:file_manager_ui/utils/formatBytes.dart';
 import 'package:flutter/material.dart';
 
 class BrowsePage extends StatefulWidget {
@@ -10,15 +11,18 @@ class BrowsePage extends StatefulWidget {
 }
 
 class _BrowsePageState extends State<BrowsePage> {
+  final StorageService storageService = StorageService();
   List<Storage> devices = [];
   @override
   void initState() {
     super.initState();
-    loadDevices();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      loadDevices();
+    });
   }
 
   Future<void> loadDevices() async {
-    final list = await StorageService.getStorageDevices();
+    final list = await storageService.getStorageDevices();
     setState(() {
       devices = list;
     });
@@ -51,11 +55,13 @@ class _BrowsePageState extends State<BrowsePage> {
     );
   }
 
-  String formatBytes(double bytes) {
-    if (bytes < 1024) return "$bytes B";
-    if (bytes < 1024 * 1024) return "${(bytes / 1024).toStringAsFixed(1)} KB";
-    if (bytes < 1024 * 1024 * 1024)
-      return "${(bytes / 1024 / 1024).toStringAsFixed(1)} MB";
-    return "${(bytes / 1024 / 1024 / 1024).toStringAsFixed(2)} GB";
-  }
+  // String formatBytes(double bytes) {
+  //   if (bytes < 1024) return "$bytes B";
+  //   if (bytes < 1024 * 1024) return "${(bytes / 1024).toStringAsFixed(1)} KB";
+  //   if (bytes < 1024 * 1024 * 1024) {
+  //     return "${(bytes / 1024 / 1024).toStringAsFixed(1)} MB";
+  //   }
+
+  //   return "${(bytes / 1024 / 1024 / 1024).toStringAsFixed(2)} GB";
+  // }
 }

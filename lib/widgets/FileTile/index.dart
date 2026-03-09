@@ -162,7 +162,7 @@ class FolderCard extends StatelessWidget {
                     isSelected
                         ? Icons.check_box
                         : Icons.check_box_outline_blank,
-                    color: isSelected ? Colors.blue : Colors.grey,
+                    color: isSelected ? const Color.fromARGB(255, 101, 85, 143) : Colors.grey,
                   ),
                 ),
                 GestureDetector(

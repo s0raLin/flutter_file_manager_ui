@@ -4,7 +4,7 @@ import 'package:file_manager_ui/models/Storage/index.dart';
 
 class StorageService {
   
-  static Future<List<Storage>> getStorageDevices() async {
+  Future<List<Storage>> getStorageDevices() async {
     final result = await Process.run('df', ['-B1']);
 
     List<Storage> devices = [];
