@@ -1,6 +1,8 @@
+import 'package:file_manager_ui/components/ResponsiveScaffold.dart';
+import 'package:file_manager_ui/contants/mainNavItems.dart';
 import 'package:file_manager_ui/pages/Browse/index.dart';
 import 'package:file_manager_ui/pages/Home/index.dart';
-import 'package:file_manager_ui/widgets/BarTile/index.dart';
+import 'package:file_manager_ui/pages/Settings/index.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -10,7 +12,7 @@ final routes = <String, Widget>{
   "/home": const HomePage(),
   "/browse": const BrowsePage(),
   "/starred": const Center(child: Text('Starred Page')),
-  "/settings": const Center(child: Text('Settings Page')),
+  "/settings": const SettingsPage(),
 };
 
 // 使用全局 Key 可以在不依赖 Context 的情况下进行跳转（可选）

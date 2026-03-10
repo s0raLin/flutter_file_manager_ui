@@ -1,4 +1,5 @@
-import 'package:file_manager_ui/models/Storage/index.dart';
+import 'package:file_manager_ui/models/BlockDevice/index.dart';
+import 'package:file_manager_ui/services/BlockDevice/index.dart';
 import 'package:file_manager_ui/services/Storage/index.dart';
 import 'package:file_manager_ui/utils/formatBytes.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +12,9 @@ class BrowsePage extends StatefulWidget {
 }
 
 class _BrowsePageState extends State<BrowsePage> {
-  final StorageService storageService = StorageService();
-  List<Storage> devices = [];
+  // final StorageService storageService = StorageService();
+  final BlockDeviceService blockDeviceService = BlockDeviceService();
+  List<BlockDevice> devices = [];
   @override
   void initState() {
     super.initState();
@@ -22,7 +24,9 @@ class _BrowsePageState extends State<BrowsePage> {
   }
 
   Future<void> loadDevices() async {
-    final list = await storageService.getStorageDevices();
+    // final list = await storageService.getStorageDevices();
+    final list = await blockDeviceService.getBlockDevices();
+
     setState(() {
       devices = list;
     });
@@ -31,7 +35,12 @@ class _BrowsePageState extends State<BrowsePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Browse')),
+      appBar: AppBar(
+        title: Text(
+          'Browse',
+          style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+        ),
+      ),
       body: ListView.separated(
         itemCount: devices.length,
         separatorBuilder: (context, index) => SizedBox(height: 20),
@@ -46,7 +55,7 @@ class _BrowsePageState extends State<BrowsePage> {
             child: ListTile(
               title: Text(d.name),
               subtitle: Text(
-                "挂载点:${d.mountPoint}\n已用: ${formatBytes(d.usedSpace)}/总容量: ${formatBytes(d.totalSpace)}",
+                "分区数量: ${d.children?.length}\n总空间: ${formatBytes(d.size)}",
               ),
             ),
           );

@@ -1,108 +1,30 @@
+import 'package:file_manager_ui/contants/mainNavItems.dart';
 import 'package:file_manager_ui/models/Storage/index.dart';
 import 'package:file_manager_ui/services/Storage/index.dart';
 import 'package:file_manager_ui/utils/formatBytes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-// 1. 导航项模型：清晰定义图标切换逻辑
-class NavItem {
-  final String label;
-  final IconData activeIcon; // 选中时的填充图标
-  final IconData normalIcon; // 未选中的线性图标
-  final String path;
-
-  const NavItem({
-    required this.label,
-    required this.activeIcon,
-    required this.normalIcon,
-    required this.path,
-  });
-}
-
-// 统一管理导航配置
-const List<NavItem> mainNavItems = [
-  NavItem(
-    label: 'Home',
-    activeIcon: Icons.home,
-    normalIcon: Icons.home_outlined,
-    path: '/home',
-  ),
-  NavItem(
-    label: 'Browse',
-    activeIcon: Icons.folder,
-    normalIcon: Icons.folder_outlined,
-    path: '/browse',
-  ),
-  NavItem(
-    label: 'Starred',
-    activeIcon: Icons.star,
-    normalIcon: Icons.star_border,
-    path: '/starred',
-  ),
-  NavItem(
-    label: 'Settings',
-    activeIcon: Icons.settings,
-    normalIcon: Icons.settings_outlined,
-    path: '/settings',
-  ),
-];
-
-// 3. 响应式外壳：根据宽度决定 UI 结构
-class ResponsiveScaffold extends StatelessWidget {
-  final StatefulNavigationShell navigationShell;
-
-  const ResponsiveScaffold({super.key, required this.navigationShell});
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        // 宽度 > 600 使用侧边栏
-        if (constraints.maxWidth > 600) {
-          return Scaffold(
-            body: Row(
-              children: [
-                _Sidebar(navigationShell: navigationShell),
-                const VerticalDivider(width: 1, thickness: 1),
-                Expanded(child: navigationShell),
-              ],
-            ),
-          );
-        }
-        // 宽度 <= 600 使用底部导航
-        return Scaffold(
-          body: navigationShell,
-          bottomNavigationBar: NavigationBar(
-            selectedIndex: navigationShell.currentIndex,
-            onDestinationSelected: (index) => navigationShell.goBranch(index),
-            destinations: mainNavItems.map((item) {
-              final isSelected =
-                  navigationShell.currentIndex == mainNavItems.indexOf(item);
-              return NavigationDestination(
-                icon: Icon(item.normalIcon),
-                selectedIcon: Icon(item.activeIcon), // 自动处理填充图标切换
-                label: item.label,
-              );
-            }).toList(),
-          ),
-        );
-      },
-    );
-  }
-}
-
 // 4. 抽取侧边栏组件，完美还原图1
-class _Sidebar extends StatefulWidget {
+class Sidebar extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
-  const _Sidebar({required this.navigationShell});
+  const Sidebar({super.key, required this.navigationShell});
 
   @override
-  State<_Sidebar> createState() => __SidebarState();
+  State<Sidebar> createState() => _SidebarState();
 }
 
-class __SidebarState extends State<_Sidebar> {
+class _SidebarState extends State<Sidebar> {
   final StorageService storageService = StorageService();
+
   List<Storage> storages = [];
+
+  Storage storage = Storage(
+    name: "name",
+    totalSpace: 0,
+    usedSpace: 0,
+    mountPoint: "mountPoint",
+  );
 
   @override
   void initState() {
@@ -113,8 +35,11 @@ class __SidebarState extends State<_Sidebar> {
   }
 
   Future<void> loadStorage() async {
-    storages = await storageService.getStorageDevices();
-
+    // storages = await storageService.getStorageDevices();
+    final result = await storageService.getStorage();
+    if (result != null) {
+      storage = result;
+    }
     setState(() {});
   }
 
@@ -242,11 +167,11 @@ class __SidebarState extends State<_Sidebar> {
   }
 
   Widget _buildStorageCard(ThemeData theme) {
-    if (storages.isEmpty) {
-      return const SizedBox.shrink();
-    }
 
-    final storage = storages.first;
+    final name = storage.name;
+    final usedSpace = formatBytes(storage.usedSpace);
+    final totalSpace = formatBytes(storage.totalSpace);
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -256,17 +181,13 @@ class __SidebarState extends State<_Sidebar> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            storage.name,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Text(
-            "${formatBytes(storage.usedSpace)} of ${formatBytes(storage.totalSpace)}",
-            style: TextStyle(fontSize: 12),
-          ),
+          Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text("$usedSpace of $totalSpace", style: TextStyle(fontSize: 12)),
           SizedBox(height: 12),
           LinearProgressIndicator(
-            value: 0.22,
+            value: storage.totalSpace > 0
+                ? storage.usedSpace / storage.totalSpace
+                : 0.0,
             borderRadius: BorderRadius.circular(10),
             minHeight: 8,
           ),
@@ -276,8 +197,8 @@ class __SidebarState extends State<_Sidebar> {
   }
 }
 
-// class _Sidebar extends StatelessWidget {
+// class Sidebar extends StatelessWidget {
 //   final StatefulNavigationShell navigationShell;
-//   const _Sidebar({required this.navigationShell});
+//   const Sidebar({required this.navigationShell});
 
 // }
