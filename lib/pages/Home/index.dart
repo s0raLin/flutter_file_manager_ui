@@ -39,11 +39,27 @@ class _HomePageState extends State<HomePage> {
   Future<void> requestPermission() async {} */
 
   void loadFiles() {
-    final list = fileService.listFiles(currentPath);
-
-    setState(() {
-      files = list;
-    });
+    try {
+      final list = fileService.listFiles(currentPath);
+      setState(() {
+        files = list;
+      });
+    } catch (e) {
+      goBack();
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("打开失败"),
+          content: Text("没有权限"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("关闭"),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   void open(FileItem file) {
@@ -87,6 +103,12 @@ class _HomePageState extends State<HomePage> {
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text('分享: ${file.name}')));
+  }
+
+  void onStar(FileItem file) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('收藏: ${file.name}')));
   }
 
   void onCopy(FileItem file) {
@@ -196,6 +218,7 @@ class _HomePageState extends State<HomePage> {
             isSelected: isSelected,
             onSelectedChanged: (selected) => toggleSelection(file.path),
             onShare: () => onShare(file),
+            onStar: () => onStar(file),
             onCopy: () => onCopy(file),
             onMove: () => onMove(file),
             onDetails: () => onDetails(file),

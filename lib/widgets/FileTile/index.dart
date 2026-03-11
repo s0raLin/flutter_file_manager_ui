@@ -1,4 +1,5 @@
 import 'package:file_manager_ui/models/FileItem/index.dart';
+import 'package:file_manager_ui/utils/fileTypeUtil.dart';
 import 'package:flutter/material.dart';
 
 class FileTile extends StatelessWidget {
@@ -7,6 +8,7 @@ class FileTile extends StatelessWidget {
   final bool isSelected;
   final ValueChanged<bool?> onSelectedChanged;
   final VoidCallback onShare;
+  final VoidCallback onStar;
   final VoidCallback onCopy;
   final VoidCallback onMove;
   final VoidCallback onDetails;
@@ -22,7 +24,8 @@ class FileTile extends StatelessWidget {
     required this.onCopy,
     required this.onMove,
     required this.onDetails,
-    required this.onDelete,
+    required this.onDelete, 
+    required this.onStar,
   });
 
   @override
@@ -43,6 +46,7 @@ class FileTile extends StatelessWidget {
         isSelected: isSelected,
         onSelectedChanged: onSelectedChanged,
         onShare: onShare,
+        onStar: onStar,
         onCopy: onCopy,
         onMove: onMove,
         onDetails: onDetails,
@@ -61,6 +65,7 @@ class FolderCard extends StatelessWidget {
   final VoidCallback? onMove;
   final VoidCallback? onDetails;
   final VoidCallback? onDelete;
+  final VoidCallback? onStar;
 
   const FolderCard({
     super.key,
@@ -72,6 +77,7 @@ class FolderCard extends StatelessWidget {
     this.onMove,
     this.onDetails,
     this.onDelete,
+    this.onStar,
   });
 
   void _showMoreOptions(BuildContext context) {
@@ -100,6 +106,14 @@ class FolderCard extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 onShare?.call();
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.star_border),
+              title: Text("收藏"),
+              onTap: () {
+                Navigator.pop(context);
+                onStar?.call();
               },
             ),
             ListTile(
@@ -162,7 +176,9 @@ class FolderCard extends StatelessWidget {
                     isSelected
                         ? Icons.check_box
                         : Icons.check_box_outline_blank,
-                    color: isSelected ? const Color.fromARGB(255, 101, 85, 143) : Colors.grey,
+                    color: isSelected
+                        ? const Color.fromARGB(255, 101, 85, 143)
+                        : Colors.grey,
                   ),
                 ),
                 GestureDetector(
@@ -183,11 +199,13 @@ class FolderCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Center(
-                child: Icon(
-                  file.isDirectory ? Icons.folder : Icons.insert_drive_file,
-                  size: 40,
-                  color: Color.fromARGB(255, 101, 85, 143),
-                ),
+                //   child: Icon(
+                //     file.isDirectory ? Icons.folder : Icons.insert_drive_file,
+                //     size: 40,
+                //     color: Color.fromARGB(255, 101, 85, 143),
+                //   ),
+                // ),
+                child: buildFileThumbnail(file),
               ),
             ),
             SizedBox(height: 12),
@@ -202,7 +220,7 @@ class FolderCard extends StatelessWidget {
 
             SizedBox(height: 4),
 
-            Text("Feb 15", style: TextStyle(color: Colors.grey)),
+            Text(file.date, style: TextStyle(color: Colors.grey)),
           ],
         ),
       ),

@@ -1,3 +1,5 @@
+import 'package:file_manager_ui/pages/Settings/LanguagePage/index.dart';
+import 'package:file_manager_ui/pages/Settings/ThemeColorPage/index.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -13,13 +15,19 @@ class SettingsPage extends StatelessWidget {
               // 关键点：限制最大宽度并居中
               constraints: const BoxConstraints(maxWidth: 600),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 40,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
                       'Settings',
-                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 24),
 
@@ -34,15 +42,28 @@ class SettingsPage extends StatelessWidget {
                     // 设置组：Appearance
                     _buildSectionHeader('APPEARANCE'),
                     _buildGroupCard([
-                      _buildSwitchTile(Icons.dark_mode_outlined, 'Dark mode', false),
-                      _buildNavigationTile(Icons.palette_outlined, 'Theme color'),
+                      _buildSwitchTile(
+                        Icons.dark_mode_outlined,
+                        'Dark mode',
+                        false,
+                      ),
+                      _buildNavigationTile(
+                        context,
+                        Icons.palette_outlined,
+                        'Theme color',
+                        destination: ThemeColorPage(),
+                      ),
                     ]),
                     const SizedBox(height: 24),
 
                     // 设置组：Preferences
                     _buildSectionHeader('PREFERENCES'),
                     _buildGroupCard([
-                      _buildSwitchTile(Icons.notifications_none_outlined, 'Notifications', true),
+                      _buildSwitchTile(
+                        Icons.notifications_none_outlined,
+                        'Notifications',
+                        true,
+                      ),
                       _buildSwitchTile(
                         Icons.cloud_upload_outlined,
                         'Auto backup',
@@ -50,9 +71,11 @@ class SettingsPage extends StatelessWidget {
                         subtitle: 'Automatically backup to cloud',
                       ),
                       _buildNavigationTile(
+                        context,
                         Icons.language_outlined,
                         'Language',
                         trailingText: 'English (US)',
+                        destination: LanguagePage(),
                       ),
                     ]),
                     const SizedBox(height: 24),
@@ -60,8 +83,13 @@ class SettingsPage extends StatelessWidget {
                     // 设置组：Other
                     _buildSectionHeader('OTHER'),
                     _buildGroupCard([
-                      _buildNavigationTile(Icons.security_outlined, 'Privacy & security'),
                       _buildNavigationTile(
+                        context,
+                        Icons.security_outlined,
+                        'Privacy & security',
+                      ),
+                      _buildNavigationTile(
+                        context,
                         Icons.info_outline,
                         'About',
                         trailingText: 'Version 1.0.0',
@@ -90,22 +118,41 @@ class SettingsPage extends StatelessWidget {
           CircleAvatar(
             radius: 35,
             backgroundColor: Color.fromARGB(255, 101, 85, 143).withOpacity(0.1),
-            child: const Text('JD', style: TextStyle(color: Color.fromARGB(255, 101, 85, 143), fontSize: 20, fontWeight: FontWeight.bold)),
+            child: const Text(
+              'JD',
+              style: TextStyle(
+                color: Color.fromARGB(255, 101, 85, 143),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           const SizedBox(width: 16),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('John Doe', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              const Text('john.doe@example.com', style: TextStyle(color: Color.fromARGB(255, 233, 221, 255))),
+              const Text(
+                'John Doe',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const Text(
+                'john.doe@example.com',
+                style: TextStyle(color: Color.fromARGB(255, 233, 221, 255)),
+              ),
               const SizedBox(height: 8),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 101, 85, 143),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Text('Premium', style: TextStyle(color: Colors.white, fontSize: 12)),
+                child: const Text(
+                  'Premium',
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                ),
               ),
             ],
           ),
@@ -129,12 +176,22 @@ class SettingsPage extends StatelessWidget {
             children: [
               const Row(
                 children: [
-                  Icon(Icons.donut_large, color: Color.fromARGB(255, 101, 85, 143), size: 20),
+                  Icon(
+                    Icons.donut_large,
+                    color: Color.fromARGB(255, 101, 85, 143),
+                    size: 20,
+                  ),
                   SizedBox(width: 8),
-                  Text('Storage', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  Text(
+                    'Storage',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
-              const Text('28.4 GB / 128 GB', style: TextStyle(color: Colors.grey)),
+              const Text(
+                '28.4 GB / 128 GB',
+                style: TextStyle(color: Colors.grey),
+              ),
             ],
           ),
           const SizedBox(height: 16),
@@ -143,7 +200,12 @@ class SettingsPage extends StatelessWidget {
             child: LinearProgressIndicator(
               value: 28.4 / 128,
               minHeight: 10,
-              backgroundColor: Color.fromARGB(255, 101, 85, 143).withOpacity(0.1),
+              backgroundColor: Color.fromARGB(
+                255,
+                101,
+                85,
+                143,
+              ).withOpacity(0.1),
               color: const Color.fromARGB(255, 101, 85, 143),
             ),
           ),
@@ -178,7 +240,11 @@ class SettingsPage extends StatelessWidget {
       padding: const EdgeInsets.only(left: 4, bottom: 8),
       child: Text(
         title,
-        style: const TextStyle(color: Color.fromARGB(255, 101, 85, 143), fontWeight: FontWeight.bold, fontSize: 12),
+        style: const TextStyle(
+          color: Color.fromARGB(255, 101, 85, 143),
+          fontWeight: FontWeight.bold,
+          fontSize: 12,
+        ),
       ),
     );
   }
@@ -195,26 +261,104 @@ class SettingsPage extends StatelessWidget {
   }
 
   // 带开关的列表项
-  Widget _buildSwitchTile(IconData icon, String title, bool value, {String? subtitle}) {
-    return ListTile(
-      leading: Icon(icon, color: Colors.black87),
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
-      subtitle: subtitle != null ? Text(subtitle, style: const TextStyle(fontSize: 12)) : null,
-      trailing: Switch(
-        value: value,
-        onChanged: (v) {},
-        activeColor: const Color.fromARGB(255, 101, 85, 143),
+  Widget _buildSwitchTile(
+    IconData icon,
+    String title,
+    bool value, {
+    String? subtitle,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: () {},
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          child: Row(
+            children: [
+              Icon(icon, color: Colors.black87),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                    if (subtitle != null)
+                      Text(
+                        subtitle,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              Switch(
+                value: value,
+                onChanged: (v) {},
+                activeColor: const Color.fromARGB(255, 101, 85, 143),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 
   // 带箭头的导航列表项
-  Widget _buildNavigationTile(IconData icon, String title, {String? trailingText}) {
-    return ListTile(
-      leading: Icon(icon, color: Colors.black87),
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
-      subtitle: trailingText != null ? Text(trailingText, style: const TextStyle(fontSize: 12)) : null,
-      trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+  Widget _buildNavigationTile(
+    BuildContext context,
+    IconData icon,
+    String title, {
+    String? trailingText,
+    Widget? destination,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: () {
+          if (destination != null) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => destination),
+            );
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          child: Row(
+            children: [
+              Icon(icon, color: Colors.black87),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                    if (trailingText != null)
+                      Text(
+                        trailingText,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right, color: Colors.grey),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

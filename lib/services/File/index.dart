@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:file_manager_ui/models/FileItem/index.dart';
+import 'package:file_manager_ui/utils/dateFormatUtil.dart';
 
 class FileService {
   List<FileItem> listFiles(String path) {
@@ -10,7 +11,16 @@ class FileService {
     return entities.map((e) {
       final name = e.path.split('/').last;
 
-      return FileItem(name: name, path: e.path, isDirectory: e is Directory);
+      final changed = e.statSync().changed;
+      final type = e.statSync().type;
+      //modified;
+      return FileItem(
+        name: name,
+        path: e.path,
+        isDirectory: e is Directory,
+        date: DateFormatUtil.formatRelativeDate(changed),
+        type: type.toString(),
+      );
     }).toList();
   }
 
