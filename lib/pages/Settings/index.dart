@@ -1,10 +1,26 @@
+import 'package:file_manager_ui/models/Storage/index.dart';
 import 'package:file_manager_ui/pages/Settings/LanguagePage/index.dart';
 import 'package:file_manager_ui/pages/Settings/ThemeColorPage/index.dart';
+import 'package:file_manager_ui/services/Storage/index.dart';
+import 'package:file_manager_ui/utils/formatBytes.dart';
 import 'package:flutter/material.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  final _storageService = StorageService();
+
+  Storage storage = Storage(
+    name: "Storage",
+    totalSpace: 0,
+    usedSpace: 0,
+    mountPoint: "/",
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,6 +121,21 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
+  @override
+  void initState() {
+    super.initState();
+    loadStorage();
+  }
+
+  Future<void> loadStorage() async {
+    final result = await _storageService.getStorage();
+    if (result != null) {
+      setState(() {
+        storage = result;
+      });
+    }
+  }
+
   // 用户卡片组件
   Widget _buildUserCard() {
     return Container(
@@ -163,6 +194,9 @@ class SettingsPage extends StatelessWidget {
 
   // 存储卡片组件
   Widget _buildStorageCard() {
+    final usedSpace = formatBytes(storage.usedSpace);
+    final totalSpace = formatBytes(storage.totalSpace);
+    
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -174,22 +208,25 @@ class SettingsPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Row(
+              Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.donut_large,
                     color: Color.fromARGB(255, 101, 85, 143),
                     size: 20,
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Text(
-                    'Storage',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    storage.name,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
-              const Text(
-                '28.4 GB / 128 GB',
+              Text(
+                "$usedSpace / $totalSpace",
                 style: TextStyle(color: Colors.grey),
               ),
             ],
