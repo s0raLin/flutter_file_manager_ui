@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 class FileTile extends StatelessWidget {
   final FileItem file;
   final VoidCallback onTap;
-  final bool isSelected;
-  final ValueChanged<bool?> onSelectedChanged;
   final VoidCallback onShare;
   final VoidCallback onStar;
   final VoidCallback onCopy;
@@ -18,13 +16,11 @@ class FileTile extends StatelessWidget {
     super.key,
     required this.file,
     required this.onTap,
-    this.isSelected = false,
-    required this.onSelectedChanged,
     required this.onShare,
     required this.onCopy,
     required this.onMove,
     required this.onDetails,
-    required this.onDelete, 
+    required this.onDelete,
     required this.onStar,
   });
 
@@ -43,8 +39,6 @@ class FileTile extends StatelessWidget {
       borderRadius: BorderRadius.circular(20),
       child: FolderCard(
         file: file,
-        isSelected: isSelected,
-        onSelectedChanged: onSelectedChanged,
         onShare: onShare,
         onStar: onStar,
         onCopy: onCopy,
@@ -58,8 +52,6 @@ class FileTile extends StatelessWidget {
 
 class FolderCard extends StatelessWidget {
   final FileItem file;
-  final bool isSelected;
-  final ValueChanged<bool?>? onSelectedChanged;
   final VoidCallback? onShare;
   final VoidCallback? onCopy;
   final VoidCallback? onMove;
@@ -70,8 +62,6 @@ class FolderCard extends StatelessWidget {
   const FolderCard({
     super.key,
     required this.file,
-    this.isSelected = false,
-    this.onSelectedChanged,
     this.onShare,
     this.onCopy,
     this.onMove,
@@ -166,21 +156,8 @@ class FolderCard extends StatelessWidget {
           children: [
             //顶部操作
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    onSelectedChanged?.call(!isSelected);
-                  },
-                  child: Icon(
-                    isSelected
-                        ? Icons.check_box
-                        : Icons.check_box_outline_blank,
-                    color: isSelected
-                        ? const Color.fromARGB(255, 101, 85, 143)
-                        : Colors.grey,
-                  ),
-                ),
                 GestureDetector(
                   onTap: () => _showMoreOptions(context),
                   child: Icon(Icons.more_vert),

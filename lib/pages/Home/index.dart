@@ -17,7 +17,6 @@ class _HomePageState extends State<HomePage> {
 
   String currentPath = "/";
   List<FileItem> files = [];
-  Set<String> selectedFiles = {};
 
   @override
   void initState() {
@@ -80,22 +79,6 @@ class _HomePageState extends State<HomePage> {
     });
 
     loadFiles();
-  }
-
-  void toggleSelection(String path) {
-    setState(() {
-      if (selectedFiles.contains(path)) {
-        selectedFiles.remove(path);
-      } else {
-        selectedFiles.add(path);
-      }
-    });
-  }
-
-  void clearSelection() {
-    setState(() {
-      selectedFiles.clear();
-    });
   }
 
   // 更多选项操作
@@ -186,37 +169,16 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(currentPath),
         leading: IconButton(onPressed: goBack, icon: Icon(Icons.arrow_back)),
-        actions: [
-          if (selectedFiles.isNotEmpty)
-            IconButton(
-              onPressed: clearSelection,
-              icon: Icon(Icons.close),
-              tooltip: '取消选择',
-            ),
-          if (selectedFiles.isNotEmpty)
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              child: Center(
-                child: Text(
-                  '${selectedFiles.length} 项已选择',
-                  style: TextStyle(fontSize: 14),
-                ),
-              ),
-            ),
-        ],
       ),
 
       body: GridView.builder(
         itemCount: files.length,
         itemBuilder: (context, index) {
           final file = files[index];
-          final isSelected = selectedFiles.contains(file.path);
 
           return FileTile(
             file: file,
             onTap: () => open(file),
-            isSelected: isSelected,
-            onSelectedChanged: (selected) => toggleSelection(file.path),
             onShare: () => onShare(file),
             onStar: () => onStar(file),
             onCopy: () => onCopy(file),
